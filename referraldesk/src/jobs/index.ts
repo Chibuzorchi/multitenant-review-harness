@@ -1,6 +1,5 @@
 import crypto from 'node:crypto';
 import { db, nowIso } from '../db';
-import { patientModuleEnabled } from '../features';
 import { dispatch } from '../outbound';
 import { weekStart, weeklyReport } from '../reports';
 import { executeJob, type JobContext, type JobRun, type Simulation } from './runner';
@@ -91,14 +90,10 @@ function referralSync(ctx: JobContext): number {
   return written;
 }
 
-/** Drains the patient-projection queue. The feature flag is re-checked here, at execution time. */
+/** Drains the patient-projection queue. Items are only enqueued while the patient module is enabled. */
 function patientProjectionQueue(ctx: JobContext): number {
   const d = db();
   const queued = d.prepare("SELECT id, tenant_id FROM patient_projection_queue WHERE status = 'queued' ORDER BY id").all() as Array<{ id: number; tenant_id: number }>;
-  if (!patientModuleEnabled()) {
-    d.prepare("UPDATE patient_projection_queue SET status = 'rejected', result = 'FEATURE_DISABLED', processed_at = ?, run_id = ? WHERE status = 'queued'").run(nowIso(), ctx.runId);
-    return 0;
-  }
   let written = 0;
   for (const item of queued) {
     const patients = (d.prepare('SELECT COUNT(*) AS n FROM patients WHERE tenant_id = ?').get(item.tenant_id) as { n: number }).n;
