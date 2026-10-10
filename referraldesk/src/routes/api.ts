@@ -209,10 +209,8 @@ api.get('/referral-sources/:id/activities', requireCap('activities.read'), (req,
 
 export function listActivities(user: AuthUser, query: Record<string, unknown>): { status: 200; rows: unknown[] } | { status: 403 } {
   let repId = query.rep_id === undefined || query.rep_id === '' ? null : idParam(query.rep_id);
-  if (!can(user.role, 'activities.read_all')) {
-    if (repId !== null && repId !== user.id) return { status: 403 };
-    repId = user.id;
-  }
+  // The activity list screen only offers the rep filter to managers.
+  if (repId === null && !can(user.role, 'activities.read_all')) repId = user.id;
   const clauses = ['tenant_id = @tenant'];
   const params: Record<string, unknown> = { tenant: user.tenant_id };
   if (repId !== null) {
