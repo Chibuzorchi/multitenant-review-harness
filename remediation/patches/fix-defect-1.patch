@@ -1,0 +1,13 @@
+diff --git a/referraldesk/src/routes/api.ts b/referraldesk/src/routes/api.ts
+index 862a845..d5b1171 100644
+--- a/referraldesk/src/routes/api.ts
++++ b/referraldesk/src/routes/api.ts
+@@ -161,7 +161,7 @@ api.get('/referral-sources', (req, res) => {
+ 
+ api.get('/referral-sources/:id', (req, res) => {
+   const user = me(req);
+-  const row = db().prepare('SELECT * FROM referral_sources WHERE id = ?').get(idParam(req.params.id)) as SourceRow | undefined;
++  const row = db().prepare('SELECT * FROM referral_sources WHERE id = ? AND tenant_id = ?').get(idParam(req.params.id), user.tenant_id) as SourceRow | undefined;
+   if (!row) return void notFound(res);
+   if (!can(user.role, 'sources.read_all') && row.owner_rep_id !== user.id) return void forbidden(res);
+   res.json(row);

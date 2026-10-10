@@ -1,0 +1,85 @@
+name: Review
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # The candidate is built into an image and run on an internal Docker network.
+      REVIEW_TARGET: docker
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The candidate is exported from a commit and the fix is built on top of it.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Dependency installation is the only step that uses the network.
+      - name: Install
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Static checks
+        run: |
+          npm run typecheck
+          npm run lint
+          npm run build
+
+      - name: Seed
+        run: npm run seed
+
+      # Builds the candidate image, starts the Docker services, runs every stage,
+      # generates the reports, and stops the services.
+      - name: Review
+        run: npm run review
+
+      - name: Generate reports
+        run: npm run report
+
+      - name: Validate seeded-defect detection
+        run: npm run validate:findings
+
+      - name: Remediate
+        run: |
+          git config user.name "review-harness-ci"
+          git config user.email "review-harness-ci@example.invalid"
+          npm run demo:remediate
+
+      - name: Retest
+        run: npm run review:retest
+
+      - name: Validate retest
+        run: npm run validate:findings -- --retest
+
+      - name: Upload evidence and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-${{ github.sha }}
+          path: |
+            evidence/
+            reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Clean up
+        if: always()
+        run: |
+          for project in $(docker compose ls -q | grep '^rdreview-' || true); do
+            docker compose -p "$project" down --volumes --remove-orphans
+          done
+          npm run clean

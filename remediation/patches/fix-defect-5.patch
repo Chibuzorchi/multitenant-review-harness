@@ -1,0 +1,13 @@
+diff --git a/referraldesk/src/reports.ts b/referraldesk/src/reports.ts
+index 1bd867d..9e41d78 100644
+--- a/referraldesk/src/reports.ts
++++ b/referraldesk/src/reports.ts
+@@ -70,7 +70,7 @@ export function weeklyReport(tenantId: number, range: Range) {
+ export function monthlyReport(tenantId: number, range: Range) {
+   const activityRows = db()
+     .prepare(
+-      `SELECT substr(created_at, 1, 7) AS month,
++      `SELECT substr(activity_date, 1, 7) AS month,
+               COUNT(*) AS activities,
+               SUM(activity_type = 'visit') AS visits,
+               SUM(activity_type = 'call') AS calls,

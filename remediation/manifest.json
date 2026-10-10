@@ -1,0 +1,11 @@
+{
+  "description": "Demo remediation set. Each patch repairs one finding and is applied on top of the reviewed build by `npm run demo:remediate`. Patches are keyed by the harness's finding key, not by a FIND number, so they still match if finding numbering changes.",
+  "branch": "demo/remediated",
+  "patches": [
+    { "file": "patches/fix-defect-1.patch", "finding_key": "tenant-isolation/GET /api/referral-sources/:id", "summary": "Scope the referral source detail lookup to the caller's tenant" },
+    { "file": "patches/fix-defect-2.patch", "finding_key": "role-boundary/activities.list_other_rep", "summary": "Enforce the rep activity filter restriction on the server" },
+    { "file": "patches/fix-defect-3.patch", "finding_key": "session/api-token-revocation", "summary": "Revoke API tokens together with browser sessions" },
+    { "file": "patches/fix-defect-4.patch", "finding_key": "module-denial/queued-work-executes-after-disable", "summary": "Re-check the patient module flag when queued work executes" },
+    { "file": "patches/fix-defect-5.patch", "finding_key": "reconciliation/monthly/activity-attribution", "summary": "Bucket monthly activity counts by activity_date" }
+  ]
+}

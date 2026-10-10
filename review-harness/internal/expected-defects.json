@@ -1,0 +1,55 @@
+{
+  "description": "Private validation fixture for the ReferralDesk demo target. It lists what a correct review of the seeded build must report. It is read only by scripts/validate-findings.ts; no review stage reads it, so detection cannot depend on it. It does not exist for a real client engagement.",
+  "expected": [
+    {
+      "expected_finding_id": "FIND-001",
+      "expected_severity": "High",
+      "expected_category": "role-boundary",
+      "affected_role": "rep",
+      "affected_component": "GET /api/activities?rep_id=:other_rep",
+      "expected_detection_stage": "02-role-matrix",
+      "expected_key": "role-boundary/activities.list_other_rep",
+      "expected_signal": "denied-role-received-protected-data"
+    },
+    {
+      "expected_finding_id": "FIND-002",
+      "expected_severity": "High",
+      "expected_category": "session-management",
+      "affected_role": "rep",
+      "affected_component": "POST /api/auth/revoke",
+      "expected_detection_stage": "03-sessions",
+      "expected_key": "session/api-token-revocation",
+      "expected_signal": "api-token-accepted-after-revocation"
+    },
+    {
+      "expected_finding_id": "FIND-003",
+      "expected_severity": "Critical",
+      "expected_category": "tenant-isolation",
+      "affected_role": "executive",
+      "affected_component": "GET /api/referral-sources/:id",
+      "expected_detection_stage": "04-tenant-isolation",
+      "expected_key": "tenant-isolation/GET /api/referral-sources/:id",
+      "expected_signal": "victim-tenant-data-in-response"
+    },
+    {
+      "expected_finding_id": "FIND-004",
+      "expected_severity": "High",
+      "expected_category": "module-denial",
+      "affected_role": "executive",
+      "affected_component": "patient-projection-queue",
+      "expected_detection_stage": "05-module-denial",
+      "expected_key": "module-denial/queued-work-executes-after-disable",
+      "expected_signal": "queued-item-executed-while-flag-off"
+    },
+    {
+      "expected_finding_id": "FIND-005",
+      "expected_severity": "Medium",
+      "expected_category": "reconciliation",
+      "affected_role": "executive",
+      "affected_component": "GET /api/reports/monthly",
+      "expected_detection_stage": "06-reconciliation",
+      "expected_key": "reconciliation/monthly/activity-attribution",
+      "expected_signal": "attributed-by:created_at"
+    }
+  ]
+}
