@@ -1,0 +1,57 @@
+# `docker compose up --build` brings up the ReferralDesk demo on http://127.0.0.1:3000
+#
+# Network model: `app` and `sink` live on an internal-only network with no
+# route to the host network or the internet. `gateway` is the single bridge
+# and publishes them on the host's loopback interface only.
+name: ${COMPOSE_PROJECT_NAME:-referraldesk}
+
+services:
+  app:
+    image: ${REFERRALDESK_IMAGE:-referraldesk:local}
+    build:
+      context: .
+      args:
+        BUILD_SHA: ${BUILD_SHA:-unversioned}
+    environment:
+      HOST: 0.0.0.0
+      PORT: "3000"
+      DB_PATH: /data/referraldesk.db
+      LOG_DIR: /data/logs
+      APP_ENV: ${APP_ENV:-docker-demo}
+      BUILD_SHA: ${BUILD_SHA:-unversioned}
+      SINK_URL: http://sink:4010
+      EGRESS_ALLOW_HOSTS: sink
+      PATIENT_MODULE_ENABLED: "false"
+      SEED_ON_START: ${SEED_ON_START:-true}
+      SCHEDULER_ENABLED: ${SCHEDULER_ENABLED:-false}
+    volumes:
+      - ${REFERRALDESK_DATA:-./data/docker}:/data
+    networks: [internal]
+    depends_on: [sink]
+
+  sink:
+    image: ${REFERRALDESK_IMAGE:-referraldesk:local}
+    command: ["node", "dist/sink.js"]
+    environment:
+      SINK_HOST: 0.0.0.0
+      SINK_PORT: "4010"
+      SINK_LOG: /data/sink/receipts.jsonl
+    volumes:
+      - ${REFERRALDESK_DATA:-./data/docker}:/data
+    networks: [internal]
+
+  gateway:
+    image: ${REFERRALDESK_IMAGE:-referraldesk:local}
+    command: ["node", "dist/gateway.js"]
+    environment:
+      FORWARDS: "3000:app:3000,4010:sink:4010"
+    ports:
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+      - "127.0.0.1:${SINK_PORT:-4010}:4010"
+    networks: [internal, edge]
+    depends_on: [app, sink]
+
+networks:
+  internal:
+    internal: true
+  edge: {}

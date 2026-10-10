@@ -1,0 +1,42 @@
+{
+  "name": "copilot-phase1-review-harness",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CoPilot Phase-1 Review Harness: a repeatable QA and application-security review methodology, demonstrated against a fictional local CRM (ReferralDesk).",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "tsx scripts/dev.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "seed": "tsx referraldesk/src/seed-cli.ts",
+    "review": "tsx scripts/review.ts --kind initial",
+    "review:security": "tsx scripts/review.ts --kind initial --stages 01,02,03,04,05,08",
+    "review:retest": "tsx scripts/review.ts --kind retest",
+    "report": "tsx review-harness/09-report/generate.ts",
+    "validate:findings": "tsx scripts/validate-findings.ts",
+    "demo:remediate": "tsx scripts/remediate.ts",
+    "demo": "tsx scripts/demo.ts",
+    "demo:docker": "REVIEW_TARGET=docker tsx scripts/demo.ts",
+    "clean": "tsx scripts/clean.ts"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/adm-zip": "^0.5.7",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.18.0",
+    "adm-zip": "^0.6.1",
+    "eslint": "^10.12.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.1"
+  }
+}

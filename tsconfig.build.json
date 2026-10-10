@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "lib": ["ES2023"],
+    "rootDir": "referraldesk/src",
+    "outDir": "dist"
+  },
+  "include": ["referraldesk/src"]
+}
