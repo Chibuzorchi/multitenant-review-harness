@@ -2,6 +2,8 @@
 # build time; the running containers have no route off the internal network.
 FROM node:22-slim AS build
 WORKDIR /app
+# better-sqlite3 is a native module; the toolchain is needed when no prebuilt binary matches the platform.
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ && rm -rf /var/lib/apt/lists/*
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY tsconfig.json tsconfig.build.json ./
