@@ -53,7 +53,7 @@ export function revokeSession(sessionId: string): void {
 /** Explicit revocation: ends every credential issued to the user, browser sessions and API tokens alike. */
 export function revokeUserCredentials(userId: number): number {
   return db()
-    .prepare('UPDATE sessions SET revoked_at = ? WHERE user_id = ? AND revoked_at IS NULL')
+    .prepare("UPDATE sessions SET revoked_at = ? WHERE user_id = ? AND kind = 'browser' AND revoked_at IS NULL")
     .run(nowIso(), userId).changes;
 }
 
