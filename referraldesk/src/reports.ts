@@ -70,7 +70,7 @@ export function weeklyReport(tenantId: number, range: Range) {
 export function monthlyReport(tenantId: number, range: Range) {
   const activityRows = db()
     .prepare(
-      `SELECT substr(activity_date, 1, 7) AS month,
+      `SELECT substr(created_at, 1, 7) AS month,
               COUNT(*) AS activities,
               SUM(activity_type = 'visit') AS visits,
               SUM(activity_type = 'call') AS calls,
