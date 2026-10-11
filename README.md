@@ -2,6 +2,12 @@
 
 A repeatable QA and application-security review method for a multi-tenant B2B SaaS CRM, demonstrated end to end against a small stand-in application.
 
+Built in October 2026 to demonstrate a method for a phase-1 review of a multi-tenant CRM, before any access to a real system.
+
+**See the output without running anything:** [sample review](examples/run-001/full-review.md) (five findings open) and its [retest](examples/run-001-retest/retest-summary.md) (all five verified fixed). Each folder under [`examples/`](examples/) holds the full set from one real run: `executive-summary.html`, `report.html`, `findings.json`, `role-matrix.csv` and the sealed evidence.
+
+[![Executive summary of the sample review: not ready for release, four release-blocking findings open](docs/images/executive-summary.png)](examples/run-001/executive-summary.html)
+
 The repository has two parts:
 
 | Part | What it is |

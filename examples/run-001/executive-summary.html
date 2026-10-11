@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Executive summary · ReferralDesk 27078b40cc23 review RUN-2026-10-11-001</title>
+<style>
+:root{--ink:#10243a;--muted:#5a6f85;--line:#d5e3ef;--navy:#0b3d66;--blue:#1668a8;--cyan:#12a5c4;--wash:#f1f8fc;--bad:#a12a3a;--warn:#8a5a00;--good:#0b6b4f}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:14px/1.5 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+.page{max-width:1040px;margin:0 auto;padding:28px 32px 48px}
+header.top{border-bottom:3px solid var(--navy);padding-bottom:14px;margin-bottom:18px}
+header.top .kicker{color:var(--blue);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+h1{font-size:24px;margin:4px 0 2px;color:var(--navy)}
+h2{font-size:17px;color:var(--navy);margin:30px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+h3{font-size:14.5px;margin:18px 0 6px;color:var(--navy)}
+p{margin:6px 0}
+.sub{color:var(--muted);font-size:13px}
+.verdict{border-left:5px solid var(--blue);background:var(--wash);padding:12px 16px;margin:14px 0}
+.verdict strong{display:block;font-size:17px}
+.verdict.bad{border-color:var(--bad)}.verdict.bad strong{color:var(--bad)}
+.verdict.warn{border-color:var(--warn)}.verdict.warn strong{color:var(--warn)}
+.verdict.good{border-color:var(--good)}.verdict.good strong{color:var(--good)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:2px 10px;font-size:13px}
+.kv dt{color:var(--muted)}.kv dd{margin:0;overflow-wrap:anywhere}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{background:var(--wash);color:var(--navy);text-align:left;font-weight:600;border-bottom:2px solid var(--line);padding:6px 8px}
+td{border-bottom:1px solid var(--line);padding:6px 8px;vertical-align:top;overflow-wrap:anywhere}
+.scroll{overflow-x:auto}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:3px;padding:0 6px;font-size:12px;font-weight:600;white-space:nowrap;background:#fff}
+.tag.Critical{color:#fff;background:var(--navy);border-color:var(--navy)}
+.tag.High{color:#fff;background:var(--blue);border-color:var(--blue)}
+.tag.Medium{color:var(--navy);background:#cfeaf3;border-color:#9fd3e3}
+.tag.Low,.tag.Informational{color:var(--muted)}
+.res{font-weight:700}.res.PASS{color:var(--good)}.res.FAIL{color:var(--bad)}.res.NOT{color:var(--muted)}
+.st{font-weight:600}.st.OPEN,.st.NOT_FIXED,.st.REGRESSION{color:var(--bad)}.st.FIXED_PENDING_RETEST,.st.PARTIALLY_FIXED{color:var(--warn)}.st.VERIFIED_FIXED{color:var(--good)}
+code,pre{font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f6fafd;border:1px solid var(--line);padding:10px;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0}
+.finding{border:1px solid var(--line);border-top:3px solid var(--blue);padding:4px 16px 14px;margin:18px 0}
+.finding img{max-width:100%;border:1px solid var(--line);margin-top:6px}
+ol,ul{margin:4px 0;padding-left:22px}
+footer{margin-top:32px;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+@media (max-width:760px){.grid,.cols{grid-template-columns:1fr}.kv{grid-template-columns:1fr}.page{padding:18px 16px 32px}}
+@media print{.page{max-width:none;padding:0}.pagebreak{break-after:page}.finding{break-inside:avoid}}
+</style>
+</head>
+<body><div class="page">
+<header class="top">
+<div class="kicker">Multi-tenant Review Harness · Release review</div>
+<h1>ReferralDesk 1.0.0 · build 27078b40cc23</h1>
+<div class="sub">Run RUN-2026-10-11-001 · reviewed 2026-10-11 · demonstration against a fictional application with synthetic data</div>
+</header>
+<div class="verdict bad"><strong>Not ready for release</strong>4 release-blocking findings open (FIND-001, FIND-002, FIND-003, FIND-004).</div>
+<div class="grid">
+<dl class="kv"><dt>Candidate</dt><dd>ReferralDesk 1.0.0</dd><dt>Source SHA</dt><dd><code>27078b40cc23a622a81d93658dc68028bd4f563d</code></dd><dt>Image digest</dt><dd>Not applicable: candidate ran as a local process from an export of the commit</dd><dt>Review date</dt><dd>2026-10-11</dd></dl>
+<dl class="kv"><dt>Scope</dt><dd>ReferralDesk 1.0.0, environment &quot;referraldesk-local&quot;: 3 tenants, 5 roles, UI and API, background jobs and outbound actions. Patient module flag OFF.</dd><dt>Stages executed</dt><dd>8 of 8, plus reporting</dd><dt>Tests</dt><dd>365 passed, 27 failed · 1297 individual checks</dd><dt>Release-blocking</dt><dd><strong>4</strong> open (FIND-001, FIND-002, FIND-003, FIND-004)</dd></dl>
+</div>
+<div class="cols">
+<div>
+<h2>Results by control</h2>
+<table><thead><tr><th>Control</th><th>Result</th><th>Detail</th></tr></thead><tbody>
+<tr><td>Tenant isolation</td><td><span class="res FAIL">FAIL</span></td><td>25 of 530 checks failed (FIND-003)</td></tr>
+<tr><td>Role boundaries</td><td><span class="res FAIL">FAIL</span></td><td>2 of 320 checks failed (FIND-001)</td></tr>
+<tr><td>Sessions and tokens</td><td><span class="res FAIL">FAIL</span></td><td>16 of 70 checks failed (FIND-002)</td></tr>
+<tr><td>Patient-module denial</td><td><span class="res FAIL">FAIL</span></td><td>1 of 64 checks failed (FIND-004)</td></tr>
+<tr><td>Reconciliation</td><td><span class="res FAIL">FAIL</span></td><td>10 of 246 checks failed (FIND-005)</td></tr>
+<tr><td>Scheduled work</td><td><span class="res PASS">PASS</span></td><td>16 checks passed</td></tr>
+<tr><td>Containment</td><td><span class="res PASS">PASS</span></td><td>15 checks passed</td></tr>
+</tbody></table>
+</div>
+<div>
+<h2>Findings by severity</h2>
+<table><thead><tr><th>Severity</th><th>Found</th><th>Open</th></tr></thead><tbody>
+<tr><td><span class="tag Critical">Critical</span></td><td>1</td><td>1</td></tr>
+<tr><td><span class="tag High">High</span></td><td>3</td><td>3</td></tr>
+<tr><td><span class="tag Medium">Medium</span></td><td>1</td><td>1</td></tr>
+<tr><td><span class="tag Low">Low</span></td><td>0</td><td>0</td></tr>
+<tr><td><span class="tag Informational">Informational</span></td><td>0</td><td>0</td></tr>
+</tbody></table>
+<p class="sub">Severity is a five-level qualitative scale defined in this report. It is not a CVSS score. Critical and High block release.</p>
+</div>
+</div>
+<h2>Findings and retest status</h2>
+<p>No retest has been executed for this run.</p>
+<div class="scroll"><table><thead><tr><th>ID</th><th>Severity</th><th>Finding</th><th>Status</th><th>Found in</th><th>Retested in</th></tr></thead><tbody>
+<tr><td>FIND-001</td><td><span class="tag High">High</span></td><td>The server lets a role without permission: list another rep's activities by filter</td><td><span class="st OPEN">Open</span></td><td>RUN-2026-10-11-001<br><code>27078b40cc23</code></td><td>Not retested</td></tr>
+<tr><td>FIND-002</td><td><span class="tag High">High</span></td><td>An API token is still accepted after the user's credentials are revoked</td><td><span class="st OPEN">Open</span></td><td>RUN-2026-10-11-001<br><code>27078b40cc23</code></td><td>Not retested</td></tr>
+<tr><td>FIND-003</td><td><span class="tag Critical">Critical</span></td><td>A user of one tenant can read another tenant's data through GET /api/referral-sources/:id</td><td><span class="st OPEN">Open</span></td><td>RUN-2026-10-11-001<br><code>27078b40cc23</code></td><td>Not retested</td></tr>
+<tr><td>FIND-004</td><td><span class="tag High">High</span></td><td>Patient work queued while the module was ON is executed after the module is switched OFF</td><td><span class="st OPEN">Open</span></td><td>RUN-2026-10-11-001<br><code>27078b40cc23</code></td><td>Not retested</td></tr>
+<tr><td>FIND-005</td><td><span class="tag Medium">Medium</span></td><td>The monthly report attributes activities to the wrong period</td><td><span class="st OPEN">Open</span></td><td>RUN-2026-10-11-001<br><code>27078b40cc23</code></td><td>Not retested</td></tr>
+</tbody></table></div>
+
+<footer>Evidence: <code>evidence/RUN-2026-10-11-001/</code> (manifest, per-finding folders, logs, checksums). Generated 2026-10-11T17:30:29.770Z by harness 27078b40cc23. ReferralDesk is a fictional application built for this demonstration; all tenants, people and businesses in it are invented. No real system was contacted.</footer>
+</div></body>
+</html>

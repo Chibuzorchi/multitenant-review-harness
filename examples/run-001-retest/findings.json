@@ -1,0 +1,432 @@
+{
+  "run_id": "RUN-2026-10-11-002",
+  "generated_at": "2026-10-11T17:31:34.857Z",
+  "manifest": "evidence/RUN-2026-10-11-002/manifest.json",
+  "release_blocking_open": [],
+  "findings": [
+    {
+      "id": "FIND-001",
+      "key": "role-boundary/activities.list_other_rep",
+      "title": "The server lets a role without permission: list another rep's activities by filter",
+      "severity": "High",
+      "status": "VERIFIED_FIXED",
+      "category": "role-boundary",
+      "affected_roles": [
+        "rep"
+      ],
+      "affected_tenants": [
+        "A"
+      ],
+      "affected_route_or_job": "GET /api/activities?rep_id=:other_rep",
+      "build": {
+        "git_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+        "application": "ReferralDesk",
+        "version": "1.0.0",
+        "image": null
+      },
+      "run_id": "RUN-2026-10-11-001",
+      "manifest": "../manifest.json",
+      "detection": {
+        "stage": "02-role-matrix",
+        "failing_checks": 2,
+        "checks_under_key": 6,
+        "signals": [
+          "denied-role-received-protected-data"
+        ]
+      },
+      "preconditions": [
+        "Signed in as the Rep test account of tenant A with an API token.",
+        "The resource addressed belongs to the same tenant."
+      ],
+      "reproduction_steps": [
+        "Send GET /api/activities?rep_id=:other_rep directly to the API with the rep token (resolved request: GET /api/activities?rep_id=6).",
+        "Read the status and the body.",
+        "Check whether the protected data is present, and whether the database changed."
+      ],
+      "expected_result": "denied (permission activities.read_other_rep: executive, operations_manager, sales_manager)",
+      "actual_result": "allowed (HTTP 200) (2 checks failed under this finding; see observations.json)",
+      "security_impact": "A role can read data the permission model denies it. The restriction exists in the interface but is not enforced by the server.",
+      "business_impact": "Staff can see colleagues' accounts and pipeline, which undermines territory ownership and commission integrity, and breaks the access promises made to the customer.",
+      "request_evidence": "request.json",
+      "response_evidence": "response.json",
+      "supporting_artifacts": [
+        "observations.json",
+        "screenshot.png",
+        "video.webm",
+        "trace.zip",
+        "logs.txt"
+      ],
+      "first_seen_run": "RUN-2026-10-11-001",
+      "first_seen_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+      "retest_run": "RUN-2026-10-11-002",
+      "retest_sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+      "retest_status": "VERIFIED_FIXED",
+      "evidence_dir": "evidence/RUN-2026-10-11-001/FIND-001",
+      "history": [
+        {
+          "at": "2026-10-11T17:30:29.204Z",
+          "status": "OPEN",
+          "run_id": "RUN-2026-10-11-001",
+          "sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+          "note": "Detected in RUN-2026-10-11-001."
+        },
+        {
+          "at": "2026-10-11T17:30:30.417Z",
+          "status": "FIXED_PENDING_RETEST",
+          "run_id": null,
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "Fix claimed; not yet retested."
+        },
+        {
+          "at": "2026-10-11T17:31:34.370Z",
+          "status": "VERIFIED_FIXED",
+          "run_id": "RUN-2026-10-11-002",
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "All 2 originally failing check(s) were re-executed against build c4b1536f2ad5 and now pass."
+        }
+      ]
+    },
+    {
+      "id": "FIND-002",
+      "key": "session/api-token-revocation",
+      "title": "An API token is still accepted after the user's credentials are revoked",
+      "severity": "High",
+      "status": "VERIFIED_FIXED",
+      "category": "session-management",
+      "affected_roles": [
+        "executive",
+        "operations_manager",
+        "sales_manager",
+        "intake",
+        "rep"
+      ],
+      "affected_tenants": [
+        "A"
+      ],
+      "affected_route_or_job": "POST /api/auth/revoke; POST /api/users/:id/revoke-sessions",
+      "build": {
+        "git_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+        "application": "ReferralDesk",
+        "version": "1.0.0",
+        "image": null
+      },
+      "run_id": "RUN-2026-10-11-001",
+      "manifest": "../manifest.json",
+      "detection": {
+        "stage": "03-sessions",
+        "failing_checks": 16,
+        "checks_under_key": 16,
+        "signals": [
+          "api-token-accepted-after-revocation"
+        ]
+      },
+      "preconditions": [
+        "Executive test account of tenant A holds a browser session and an API token, both working."
+      ],
+      "reproduction_steps": [
+        "Sign in to obtain a browser session.",
+        "Request an API token for the same account.",
+        "Confirm both credentials are accepted.",
+        "Call the revoke-all-credentials endpoint from the browser session.",
+        "Reuse the browser session and the API token."
+      ],
+      "expected_result": "HTTP 401 with the revoked API token",
+      "actual_result": "revoke HTTP 200, token then HTTP 200 (16 checks failed under this finding; see observations.json)",
+      "security_impact": "A credential remains usable after the point at which the system says it has ended.",
+      "business_impact": "Access cannot be reliably withdrawn from a departing employee, a lost device or a leaked credential.",
+      "request_evidence": "request.json",
+      "response_evidence": "response.json",
+      "supporting_artifacts": [
+        "observations.json",
+        "trace.zip",
+        "logs.txt"
+      ],
+      "first_seen_run": "RUN-2026-10-11-001",
+      "first_seen_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+      "retest_run": "RUN-2026-10-11-002",
+      "retest_sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+      "retest_status": "VERIFIED_FIXED",
+      "evidence_dir": "evidence/RUN-2026-10-11-001/FIND-002",
+      "history": [
+        {
+          "at": "2026-10-11T17:30:29.221Z",
+          "status": "OPEN",
+          "run_id": "RUN-2026-10-11-001",
+          "sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+          "note": "Detected in RUN-2026-10-11-001."
+        },
+        {
+          "at": "2026-10-11T17:30:30.417Z",
+          "status": "FIXED_PENDING_RETEST",
+          "run_id": null,
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "Fix claimed; not yet retested."
+        },
+        {
+          "at": "2026-10-11T17:31:34.372Z",
+          "status": "VERIFIED_FIXED",
+          "run_id": "RUN-2026-10-11-002",
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "All 16 originally failing check(s) were re-executed against build c4b1536f2ad5 and now pass."
+        }
+      ]
+    },
+    {
+      "id": "FIND-003",
+      "key": "tenant-isolation/GET /api/referral-sources/:id",
+      "title": "A user of one tenant can read another tenant's data through GET /api/referral-sources/:id",
+      "severity": "Critical",
+      "status": "VERIFIED_FIXED",
+      "category": "tenant-isolation",
+      "affected_roles": [
+        "executive",
+        "operations_manager",
+        "sales_manager",
+        "intake"
+      ],
+      "affected_tenants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "affected_route_or_job": "GET /api/referral-sources/:id",
+      "build": {
+        "git_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+        "application": "ReferralDesk",
+        "version": "1.0.0",
+        "image": null
+      },
+      "run_id": "RUN-2026-10-11-001",
+      "manifest": "../manifest.json",
+      "detection": {
+        "stage": "04-tenant-isolation",
+        "failing_checks": 25,
+        "checks_under_key": 31,
+        "signals": [
+          "victim-tenant-data-in-response"
+        ]
+      },
+      "preconditions": [
+        "Signed in as the executive test account of tenant A.",
+        "Identifiers of tenant B records are known to the caller (identifiers are sequential integers)."
+      ],
+      "reproduction_steps": [
+        "Obtain an API token as the executive of tenant A.",
+        "GET /api/referral-sources/51 (Referral source detail by foreign id; vector: url-path-id).",
+        "Inspect the response for records whose tenant is the victim tenant."
+      ],
+      "expected_result": "no victim-tenant data in the response",
+      "actual_result": "HTTP 200; response contains victim-tenant data (25 checks failed under this finding; see observations.json)",
+      "security_impact": "An authenticated user of one tenant can read records that belong to a different tenant by changing an identifier.",
+      "business_impact": "One customer can see another customer's commercial relationships. This is a reportable breach of tenant confidentiality and of the customer contract.",
+      "request_evidence": "request.json",
+      "response_evidence": "response.json",
+      "supporting_artifacts": [
+        "observations.json",
+        "screenshot.png",
+        "video.webm",
+        "trace.zip",
+        "logs.txt"
+      ],
+      "first_seen_run": "RUN-2026-10-11-001",
+      "first_seen_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+      "retest_run": "RUN-2026-10-11-002",
+      "retest_sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+      "retest_status": "VERIFIED_FIXED",
+      "evidence_dir": "evidence/RUN-2026-10-11-001/FIND-003",
+      "history": [
+        {
+          "at": "2026-10-11T17:30:29.264Z",
+          "status": "OPEN",
+          "run_id": "RUN-2026-10-11-001",
+          "sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+          "note": "Detected in RUN-2026-10-11-001."
+        },
+        {
+          "at": "2026-10-11T17:30:30.417Z",
+          "status": "FIXED_PENDING_RETEST",
+          "run_id": null,
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "Fix claimed; not yet retested."
+        },
+        {
+          "at": "2026-10-11T17:31:34.373Z",
+          "status": "VERIFIED_FIXED",
+          "run_id": "RUN-2026-10-11-002",
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "All 25 originally failing check(s) were re-executed against build c4b1536f2ad5 and now pass."
+        }
+      ]
+    },
+    {
+      "id": "FIND-004",
+      "key": "module-denial/queued-work-executes-after-disable",
+      "title": "Patient work queued while the module was ON is executed after the module is switched OFF",
+      "severity": "High",
+      "status": "VERIFIED_FIXED",
+      "category": "module-denial",
+      "affected_roles": [
+        "executive"
+      ],
+      "affected_tenants": [
+        "A"
+      ],
+      "affected_route_or_job": "job patient-projection-queue (queued by POST /api/jobs/patient-sync)",
+      "build": {
+        "git_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+        "application": "ReferralDesk",
+        "version": "1.0.0",
+        "image": null
+      },
+      "run_id": "RUN-2026-10-11-001",
+      "manifest": "../manifest.json",
+      "detection": {
+        "stage": "05-module-denial",
+        "failing_checks": 1,
+        "checks_under_key": 1,
+        "signals": [
+          "queued-item-executed-while-flag-off"
+        ]
+      },
+      "preconditions": [
+        "patient_module is OFF at the start and at the end.",
+        "An executive test account of the tenant."
+      ],
+      "reproduction_steps": [
+        "Switch patient_module ON.",
+        "POST /api/jobs/patient-sync as the executive; note the queue item id.",
+        "Switch patient_module OFF.",
+        "Run the patient-projection-queue worker.",
+        "Read the queue item and the patient projection table from the database."
+      ],
+      "expected_result": "queued item not processed; no patient projection written while the flag is OFF",
+      "actual_result": "queue item done (PROJECTED); 1 projection(s) written; worker run succeeded",
+      "security_impact": "Functionality behind a disabled feature flag is reachable or executes. For a module that is switched off because it is not yet approved to hold regulated data, the switch is the control.",
+      "business_impact": "The business cannot state that the unapproved module is inert in production, which is the basis on which the release is being approved.",
+      "request_evidence": "request.json",
+      "response_evidence": "response.json",
+      "supporting_artifacts": [
+        "observations.json",
+        "trace.zip",
+        "logs.txt"
+      ],
+      "first_seen_run": "RUN-2026-10-11-001",
+      "first_seen_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+      "retest_run": "RUN-2026-10-11-002",
+      "retest_sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+      "retest_status": "VERIFIED_FIXED",
+      "evidence_dir": "evidence/RUN-2026-10-11-001/FIND-004",
+      "history": [
+        {
+          "at": "2026-10-11T17:30:29.267Z",
+          "status": "OPEN",
+          "run_id": "RUN-2026-10-11-001",
+          "sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+          "note": "Detected in RUN-2026-10-11-001."
+        },
+        {
+          "at": "2026-10-11T17:30:30.417Z",
+          "status": "FIXED_PENDING_RETEST",
+          "run_id": null,
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "Fix claimed; not yet retested."
+        },
+        {
+          "at": "2026-10-11T17:31:34.373Z",
+          "status": "VERIFIED_FIXED",
+          "run_id": "RUN-2026-10-11-002",
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "All 1 originally failing check(s) were re-executed against build c4b1536f2ad5 and now pass."
+        }
+      ]
+    },
+    {
+      "id": "FIND-005",
+      "key": "reconciliation/monthly/activity-attribution",
+      "title": "The monthly report attributes activities to the wrong period",
+      "severity": "Medium",
+      "status": "VERIFIED_FIXED",
+      "category": "reconciliation",
+      "affected_roles": [
+        "executive",
+        "operations_manager",
+        "sales_manager"
+      ],
+      "affected_tenants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "affected_route_or_job": "GET /api/reports/monthly; GET /reports",
+      "build": {
+        "git_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+        "application": "ReferralDesk",
+        "version": "1.0.0",
+        "image": null
+      },
+      "run_id": "RUN-2026-10-11-001",
+      "manifest": "../manifest.json",
+      "detection": {
+        "stage": "06-reconciliation",
+        "failing_checks": 10,
+        "checks_under_key": 14,
+        "signals": [
+          "attributed-by:created_at",
+          "figures-differ-from-source-rows"
+        ]
+      },
+      "preconditions": [
+        "Seeded data set, unmodified.",
+        "Signed in as an executive of tenant A; every role with report access sees the same figures."
+      ],
+      "reproduction_steps": [
+        "GET /api/reports/monthly?from=2026-07-01&to=2026-09-30.",
+        "Read the tenant's activities rows directly from the database.",
+        "Count rows whose activity_date date falls in the range, bucketed by month using the same activity_date date.",
+        "Compare each displayed figure with the recalculated one."
+      ],
+      "expected_result": "every activities/visits/calls/notes figure equals the count of source rows attributed by activity_date, 2026-07-01 to 2026-09-30 inclusive",
+      "actual_result": "16 figure(s) differ; e.g. activities for 2026-07: displayed 295, expected 304 (difference -9) (10 checks failed under this finding; see observations.json)",
+      "security_impact": "No confidentiality impact: a reported figure does not match the records it is calculated from.",
+      "business_impact": "Managers act on wrong numbers. Activity credited to the wrong period distorts performance reviews, targets and commission.",
+      "request_evidence": "request.json",
+      "response_evidence": "response.json",
+      "supporting_artifacts": [
+        "observations.json",
+        "screenshot.png",
+        "video.webm",
+        "trace.zip",
+        "logs.txt"
+      ],
+      "first_seen_run": "RUN-2026-10-11-001",
+      "first_seen_sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+      "retest_run": "RUN-2026-10-11-002",
+      "retest_sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+      "retest_status": "VERIFIED_FIXED",
+      "evidence_dir": "evidence/RUN-2026-10-11-001/FIND-005",
+      "history": [
+        {
+          "at": "2026-10-11T17:30:29.291Z",
+          "status": "OPEN",
+          "run_id": "RUN-2026-10-11-001",
+          "sha": "27078b40cc23a622a81d93658dc68028bd4f563d",
+          "note": "Detected in RUN-2026-10-11-001."
+        },
+        {
+          "at": "2026-10-11T17:30:30.417Z",
+          "status": "FIXED_PENDING_RETEST",
+          "run_id": null,
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "Fix claimed; not yet retested."
+        },
+        {
+          "at": "2026-10-11T17:31:34.373Z",
+          "status": "VERIFIED_FIXED",
+          "run_id": "RUN-2026-10-11-002",
+          "sha": "c4b1536f2ad558dabf3c83efa661c016ff303fd2",
+          "note": "All 10 originally failing check(s) were re-executed against build c4b1536f2ad5 and now pass."
+        }
+      ]
+    }
+  ]
+}

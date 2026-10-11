@@ -1,0 +1,201 @@
+role,operation,route,expected,actual,UI result,API result,status
+executive,sources.list,GET /api/referral-sources,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+executive,sources.read_own,GET /api/referral-sources/:id,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+executive,sources.read_other_rep,GET /api/referral-sources/:id,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+executive,sources.list_other_rep,GET /api/referral-sources?owner_rep_id=:rep,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+executive,sources.search_other_rep,GET /api/search?q=:name,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+executive,sources.create_own,POST /api/referral-sources,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+executive,sources.update_own,PATCH /api/referral-sources/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,sources.update_other_rep,PATCH /api/referral-sources/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,activities.list_own,GET /api/activities?rep_id=:self,allowed,allowed,"allowed (page ""activities"")",allowed (HTTP 200),PASS
+executive,activities.list_other_rep,GET /api/activities?rep_id=:other_rep,allowed,allowed,"allowed (page ""activities"")",allowed (HTTP 200),PASS
+executive,activities.read_other_rep,GET /api/activities/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,activities.read_own,GET /api/activities/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,activities.by_source_other_rep,GET /api/referral-sources/:id/activities,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+executive,activities.create_own,POST /api/activities,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+executive,activities.create_other_rep,POST /api/activities,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+executive,activities.create_as_other_rep,POST /api/activities (rep_id in body),allowed,allowed,not applicable,allowed (HTTP 201),PASS
+executive,referrals.list_all,GET /api/referrals,allowed,allowed,"allowed (page ""referrals"")",allowed (HTTP 200),PASS
+executive,referrals.read_assigned,GET /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+executive,referrals.read_other_rep,GET /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+executive,referrals.update_status,PATCH /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+executive,referrals.create,POST /api/referrals,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+executive,admissions.list,GET /api/admissions,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,admissions.create,POST /api/admissions,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+executive,reports.summary,GET /api/reports/summary,allowed,allowed,"allowed (page ""reports"")",allowed (HTTP 200),PASS
+executive,reports.weekly,GET /api/reports/weekly,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,reports.monthly,GET /api/reports/monthly,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,reports.by-rep,GET /api/reports/by-rep,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,reports.by-source,GET /api/reports/by-source,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,exports.activities,GET /api/export/activities.csv,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,exports.referrals,GET /api/export/referrals.csv,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,users.list,GET /api/users,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,users.create,POST /api/users,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+executive,users.update,PATCH /api/users/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,users.escalate_self,PATCH /api/users/:self,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,users.revoke_sessions,POST /api/users/:id/revoke-sessions,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+executive,outreach.campaign,POST /api/outreach/campaigns,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+executive,billing.charge,POST /api/billing/charges,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+executive,patients.list,GET /api/patients,denied,denied,"denied (page ""feature-disabled"")",denied (HTTP 403 FEATURE_DISABLED),PASS
+executive,patients.sync,POST /api/jobs/patient-sync,denied,denied,not applicable,denied (HTTP 403 FEATURE_DISABLED),PASS
+operations_manager,sources.list,GET /api/referral-sources,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+operations_manager,sources.read_own,GET /api/referral-sources/:id,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+operations_manager,sources.read_other_rep,GET /api/referral-sources/:id,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+operations_manager,sources.list_other_rep,GET /api/referral-sources?owner_rep_id=:rep,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+operations_manager,sources.search_other_rep,GET /api/search?q=:name,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+operations_manager,sources.create_own,POST /api/referral-sources,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+operations_manager,sources.update_own,PATCH /api/referral-sources/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,sources.update_other_rep,PATCH /api/referral-sources/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,activities.list_own,GET /api/activities?rep_id=:self,allowed,allowed,"allowed (page ""activities"")",allowed (HTTP 200),PASS
+operations_manager,activities.list_other_rep,GET /api/activities?rep_id=:other_rep,allowed,allowed,"allowed (page ""activities"")",allowed (HTTP 200),PASS
+operations_manager,activities.read_other_rep,GET /api/activities/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,activities.read_own,GET /api/activities/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,activities.by_source_other_rep,GET /api/referral-sources/:id/activities,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+operations_manager,activities.create_own,POST /api/activities,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+operations_manager,activities.create_other_rep,POST /api/activities,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+operations_manager,activities.create_as_other_rep,POST /api/activities (rep_id in body),allowed,allowed,not applicable,allowed (HTTP 201),PASS
+operations_manager,referrals.list_all,GET /api/referrals,allowed,allowed,"allowed (page ""referrals"")",allowed (HTTP 200),PASS
+operations_manager,referrals.read_assigned,GET /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+operations_manager,referrals.read_other_rep,GET /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+operations_manager,referrals.update_status,PATCH /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+operations_manager,referrals.create,POST /api/referrals,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+operations_manager,admissions.list,GET /api/admissions,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,admissions.create,POST /api/admissions,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+operations_manager,reports.summary,GET /api/reports/summary,allowed,allowed,"allowed (page ""reports"")",allowed (HTTP 200),PASS
+operations_manager,reports.weekly,GET /api/reports/weekly,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,reports.monthly,GET /api/reports/monthly,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,reports.by-rep,GET /api/reports/by-rep,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,reports.by-source,GET /api/reports/by-source,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,exports.activities,GET /api/export/activities.csv,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,exports.referrals,GET /api/export/referrals.csv,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,users.list,GET /api/users,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+operations_manager,users.create,POST /api/users,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+operations_manager,users.update,PATCH /api/users/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+operations_manager,users.escalate_self,PATCH /api/users/:self,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+operations_manager,users.revoke_sessions,POST /api/users/:id/revoke-sessions,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+operations_manager,outreach.campaign,POST /api/outreach/campaigns,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+operations_manager,billing.charge,POST /api/billing/charges,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+operations_manager,patients.list,GET /api/patients,denied,denied,"denied (page ""feature-disabled"")",denied (HTTP 403 FEATURE_DISABLED),PASS
+operations_manager,patients.sync,POST /api/jobs/patient-sync,denied,denied,not applicable,denied (HTTP 403 FEATURE_DISABLED),PASS
+sales_manager,sources.list,GET /api/referral-sources,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+sales_manager,sources.read_own,GET /api/referral-sources/:id,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+sales_manager,sources.read_other_rep,GET /api/referral-sources/:id,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+sales_manager,sources.list_other_rep,GET /api/referral-sources?owner_rep_id=:rep,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+sales_manager,sources.search_other_rep,GET /api/search?q=:name,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+sales_manager,sources.create_own,POST /api/referral-sources,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+sales_manager,sources.update_own,PATCH /api/referral-sources/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,sources.update_other_rep,PATCH /api/referral-sources/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,activities.list_own,GET /api/activities?rep_id=:self,allowed,allowed,"allowed (page ""activities"")",allowed (HTTP 200),PASS
+sales_manager,activities.list_other_rep,GET /api/activities?rep_id=:other_rep,allowed,allowed,"allowed (page ""activities"")",allowed (HTTP 200),PASS
+sales_manager,activities.read_other_rep,GET /api/activities/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,activities.read_own,GET /api/activities/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,activities.by_source_other_rep,GET /api/referral-sources/:id/activities,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+sales_manager,activities.create_own,POST /api/activities,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+sales_manager,activities.create_other_rep,POST /api/activities,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+sales_manager,activities.create_as_other_rep,POST /api/activities (rep_id in body),allowed,allowed,not applicable,allowed (HTTP 201),PASS
+sales_manager,referrals.list_all,GET /api/referrals,allowed,allowed,"allowed (page ""referrals"")",allowed (HTTP 200),PASS
+sales_manager,referrals.read_assigned,GET /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+sales_manager,referrals.read_other_rep,GET /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+sales_manager,referrals.update_status,PATCH /api/referrals/:id,denied,denied,"denied (page ""referral"", protected content not rendered)",denied (HTTP 403 FORBIDDEN),PASS
+sales_manager,referrals.create,POST /api/referrals,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+sales_manager,admissions.list,GET /api/admissions,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,admissions.create,POST /api/admissions,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+sales_manager,reports.summary,GET /api/reports/summary,allowed,allowed,"allowed (page ""reports"")",allowed (HTTP 200),PASS
+sales_manager,reports.weekly,GET /api/reports/weekly,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,reports.monthly,GET /api/reports/monthly,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,reports.by-rep,GET /api/reports/by-rep,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,reports.by-source,GET /api/reports/by-source,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,exports.activities,GET /api/export/activities.csv,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,exports.referrals,GET /api/export/referrals.csv,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,users.list,GET /api/users,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+sales_manager,users.create,POST /api/users,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+sales_manager,users.update,PATCH /api/users/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+sales_manager,users.escalate_self,PATCH /api/users/:self,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+sales_manager,users.revoke_sessions,POST /api/users/:id/revoke-sessions,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+sales_manager,outreach.campaign,POST /api/outreach/campaigns,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+sales_manager,billing.charge,POST /api/billing/charges,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+sales_manager,patients.list,GET /api/patients,denied,denied,"denied (page ""feature-disabled"")",denied (HTTP 403 FEATURE_DISABLED),PASS
+sales_manager,patients.sync,POST /api/jobs/patient-sync,denied,denied,not applicable,denied (HTTP 403 FEATURE_DISABLED),PASS
+intake,sources.list,GET /api/referral-sources,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+intake,sources.read_own,GET /api/referral-sources/:id,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+intake,sources.read_other_rep,GET /api/referral-sources/:id,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+intake,sources.list_other_rep,GET /api/referral-sources?owner_rep_id=:rep,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+intake,sources.search_other_rep,GET /api/search?q=:name,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+intake,sources.create_own,POST /api/referral-sources,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,sources.update_own,PATCH /api/referral-sources/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,sources.update_other_rep,PATCH /api/referral-sources/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,activities.list_own,GET /api/activities?rep_id=:self,denied,denied,"denied (page ""forbidden"")",denied (HTTP 403 FORBIDDEN),PASS
+intake,activities.list_other_rep,GET /api/activities?rep_id=:other_rep,denied,denied,"denied (page ""forbidden"")",denied (HTTP 403 FORBIDDEN),PASS
+intake,activities.read_other_rep,GET /api/activities/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,activities.read_own,GET /api/activities/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,activities.by_source_other_rep,GET /api/referral-sources/:id/activities,denied,denied,"denied (page ""referral-source"", protected content not rendered)",denied (HTTP 403 FORBIDDEN),PASS
+intake,activities.create_own,POST /api/activities,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,activities.create_other_rep,POST /api/activities,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,activities.create_as_other_rep,POST /api/activities (rep_id in body),denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,referrals.list_all,GET /api/referrals,allowed,allowed,"allowed (page ""referrals"")",allowed (HTTP 200),PASS
+intake,referrals.read_assigned,GET /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+intake,referrals.read_other_rep,GET /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+intake,referrals.update_status,PATCH /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+intake,referrals.create,POST /api/referrals,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+intake,admissions.list,GET /api/admissions,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+intake,admissions.create,POST /api/admissions,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+intake,reports.summary,GET /api/reports/summary,denied,denied,"denied (page ""forbidden"")",denied (HTTP 403 FORBIDDEN),PASS
+intake,reports.weekly,GET /api/reports/weekly,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,reports.monthly,GET /api/reports/monthly,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,reports.by-rep,GET /api/reports/by-rep,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,reports.by-source,GET /api/reports/by-source,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,exports.activities,GET /api/export/activities.csv,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,exports.referrals,GET /api/export/referrals.csv,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,users.list,GET /api/users,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,users.create,POST /api/users,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,users.update,PATCH /api/users/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,users.escalate_self,PATCH /api/users/:self,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,users.revoke_sessions,POST /api/users/:id/revoke-sessions,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,outreach.campaign,POST /api/outreach/campaigns,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,billing.charge,POST /api/billing/charges,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+intake,patients.list,GET /api/patients,denied,denied,"denied (page ""feature-disabled"")",denied (HTTP 403 FEATURE_DISABLED),PASS
+intake,patients.sync,POST /api/jobs/patient-sync,denied,denied,not applicable,denied (HTTP 403 FEATURE_DISABLED),PASS
+rep,sources.list,GET /api/referral-sources,allowed,allowed,"allowed (page ""referral-sources"")",allowed (HTTP 200),PASS
+rep,sources.read_own,GET /api/referral-sources/:id,allowed,allowed,"allowed (page ""referral-source"")",allowed (HTTP 200),PASS
+rep,sources.read_other_rep,GET /api/referral-sources/:id,denied,denied,"denied (page ""forbidden"")",denied (HTTP 403 FORBIDDEN),PASS
+rep,sources.list_other_rep,GET /api/referral-sources?owner_rep_id=:rep,denied,denied,"denied (page ""referral-sources"", protected content not rendered)","denied (HTTP 200, protected data absent)",PASS
+rep,sources.search_other_rep,GET /api/search?q=:name,denied,denied,"denied (page ""referral-sources"", protected content not rendered)","denied (HTTP 200, protected data absent)",PASS
+rep,sources.create_own,POST /api/referral-sources,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+rep,sources.update_own,PATCH /api/referral-sources/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+rep,sources.update_other_rep,PATCH /api/referral-sources/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,activities.list_own,GET /api/activities?rep_id=:self,allowed,allowed,"allowed (page ""activities"")",allowed (HTTP 200),PASS
+rep,activities.list_other_rep,GET /api/activities?rep_id=:other_rep,denied,denied,"denied (page ""activities"", protected content not rendered)",denied (HTTP 403 FORBIDDEN),PASS
+rep,activities.read_other_rep,GET /api/activities/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,activities.read_own,GET /api/activities/:id,allowed,allowed,not applicable,allowed (HTTP 200),PASS
+rep,activities.by_source_other_rep,GET /api/referral-sources/:id/activities,denied,denied,"denied (page ""forbidden"")",denied (HTTP 403 FORBIDDEN),PASS
+rep,activities.create_own,POST /api/activities,allowed,allowed,not applicable,allowed (HTTP 201),PASS
+rep,activities.create_other_rep,POST /api/activities,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,activities.create_as_other_rep,POST /api/activities (rep_id in body),denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,referrals.list_all,GET /api/referrals,denied,denied,"denied (page ""referrals"", protected content not rendered)","denied (HTTP 200, protected data absent)",PASS
+rep,referrals.read_assigned,GET /api/referrals/:id,allowed,allowed,"allowed (page ""referral"")",allowed (HTTP 200),PASS
+rep,referrals.read_other_rep,GET /api/referrals/:id,denied,denied,"denied (page ""forbidden"")",denied (HTTP 403 FORBIDDEN),PASS
+rep,referrals.update_status,PATCH /api/referrals/:id,denied,denied,"denied (page ""referral"", protected content not rendered)",denied (HTTP 403 FORBIDDEN),PASS
+rep,referrals.create,POST /api/referrals,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,admissions.list,GET /api/admissions,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,admissions.create,POST /api/admissions,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,reports.summary,GET /api/reports/summary,denied,denied,"denied (page ""forbidden"")",denied (HTTP 403 FORBIDDEN),PASS
+rep,reports.weekly,GET /api/reports/weekly,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,reports.monthly,GET /api/reports/monthly,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,reports.by-rep,GET /api/reports/by-rep,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,reports.by-source,GET /api/reports/by-source,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,exports.activities,GET /api/export/activities.csv,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,exports.referrals,GET /api/export/referrals.csv,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,users.list,GET /api/users,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,users.create,POST /api/users,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,users.update,PATCH /api/users/:id,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,users.escalate_self,PATCH /api/users/:self,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,users.revoke_sessions,POST /api/users/:id/revoke-sessions,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,outreach.campaign,POST /api/outreach/campaigns,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,billing.charge,POST /api/billing/charges,denied,denied,not applicable,denied (HTTP 403 FORBIDDEN),PASS
+rep,patients.list,GET /api/patients,denied,denied,"denied (page ""feature-disabled"")",denied (HTTP 403 FEATURE_DISABLED),PASS
+rep,patients.sync,POST /api/jobs/patient-sync,denied,denied,not applicable,denied (HTTP 403 FEATURE_DISABLED),PASS
+executive,users.admin_page,GET /admin/users,allowed,allowed,"allowed (page ""admin-users"")",not applicable,PASS
+operations_manager,users.admin_page,GET /admin/users,denied,denied,"denied (page ""forbidden"")",not applicable,PASS
+sales_manager,users.admin_page,GET /admin/users,denied,denied,"denied (page ""forbidden"")",not applicable,PASS
+intake,users.admin_page,GET /admin/users,denied,denied,"denied (page ""forbidden"")",not applicable,PASS
+rep,users.admin_page,GET /admin/users,denied,denied,"denied (page ""forbidden"")",not applicable,PASS
