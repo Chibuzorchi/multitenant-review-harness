@@ -14,14 +14,24 @@ const targets = ['.review-tmp', '.candidates', 'dist', 'test-results', 'playwrig
 if (process.argv.includes('--evidence')) targets.push('evidence', 'evidence-archive', 'reports');
 
 // Sealed evidence is read-only; make it writable before removing it.
+// Files written by the candidate's containers belong to another user and cannot be
+// chmod-ed; they do not need to be, because removal depends on the parent directory.
+function chmod(target: string, mode: number): void {
+  try {
+    fs.chmodSync(target, mode);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'EPERM') throw error;
+  }
+}
+
 function unlock(dir: string): void {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isSymbolicLink()) continue;
     if (entry.isDirectory()) {
-      fs.chmodSync(full, 0o755);
+      chmod(full, 0o755);
       unlock(full);
-    } else fs.chmodSync(full, 0o644);
+    } else chmod(full, 0o644);
   }
 }
 
