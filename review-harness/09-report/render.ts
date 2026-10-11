@@ -158,7 +158,7 @@ function summaryHtml(model: Model, f: Facts): string {
   const { manifest, summary } = model;
   const kind = summary.kind === 'retest' ? 'Retest report' : 'Release review';
   return `<header class="top">
-<div class="kicker">CoPilot Phase-1 Review Harness · ${e(kind)}</div>
+<div class="kicker">Multi-tenant Review Harness · ${e(kind)}</div>
 <h1>${e(manifest.application.name)} ${e(manifest.application.version)} · build ${e(short(manifest.git_sha))}</h1>
 <div class="sub">Run ${e(model.run_id)} · reviewed ${e(date(manifest.timestamp))} · demonstration against a fictional application with synthetic data</div>
 </header>

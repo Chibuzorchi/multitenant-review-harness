@@ -1,8 +1,8 @@
 {
-  "name": "copilot-phase1-review-harness",
+  "name": "multitenant-review-harness",
   "version": "1.0.0",
   "private": true,
-  "description": "CoPilot Phase-1 Review Harness: a repeatable QA and application-security review methodology, demonstrated against a fictional local CRM (ReferralDesk).",
+  "description": "Multi-tenant Review Harness: a repeatable QA and application-security review methodology, demonstrated against a fictional local CRM (ReferralDesk).",
   "license": "UNLICENSED",
   "engines": {
     "node": ">=22"

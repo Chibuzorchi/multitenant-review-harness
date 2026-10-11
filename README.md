@@ -1,4 +1,4 @@
-# CoPilot Phase-1 Review Harness
+# Multi-tenant Review Harness
 
 A repeatable QA and application-security review method for a multi-tenant B2B SaaS CRM, demonstrated end to end against a small stand-in application.
 
