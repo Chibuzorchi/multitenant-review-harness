@@ -108,7 +108,8 @@ function startDocker(dir: string, sha: string, targetDir: string, runId: string)
   const inspect = (format: string) => execFileSync('docker', ['image', 'inspect', '--format', format, ref], { encoding: 'utf8' }).trim();
   const id = inspect('{{.Id}}');
   const digest = inspect('{{if .RepoDigests}}{{index .RepoDigests 0}}{{end}}') || null;
-  fs.chmodSync(targetDir, 0o777);
+  // The containers run as an unprivileged user whose uid differs from the host's, so every shared directory must be writable by it.
+  for (const shared of [targetDir, path.join(targetDir, 'logs'), path.join(targetDir, 'sink')]) fs.chmodSync(shared, 0o777);
   const env = { REFERRALDESK_IMAGE: ref, BUILD_SHA: sha, APP_PORT: String(APP_PORT), SINK_PORT: String(SINK_PORT), REFERRALDESK_DATA: targetDir, APP_ENV: 'review-docker', COMPOSE_PROJECT_NAME: project };
   docker(['compose', '-p', project, 'up', '-d', '--no-build'], env);
   return {
