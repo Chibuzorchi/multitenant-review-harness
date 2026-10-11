@@ -44,7 +44,9 @@ export const auth: AuthAdapter = {
     await page.goto('/login');
     await page.locator('input[name="email"]').fill(account.email);
     await page.locator('input[name="password"]').fill(pw);
-    await Promise.all([page.waitForLoadState('load'), page.locator('form[action="/login"] button[type="submit"]').click()]);
+    // Wait for the navigation the submit causes; the current page is already loaded, so waiting for 'load' alone returns at once.
+    await Promise.all([page.waitForEvent('framenavigated', (frame) => frame === page.mainFrame()), page.locator('form[action="/login"] button[type="submit"]').click()]);
+    await page.waitForLoadState('load');
   },
 
   async uiLogout(page) {

@@ -55,7 +55,9 @@ test.describe('03 sessions · UI', () => {
     await form.locator('[name="activity_type"]').selectOption('note');
     await form.locator('[name="activity_date"]').fill('2026-09-16');
     await form.locator('[name="notes"]').fill(note);
-    await Promise.all([page.waitForLoadState('load'), form.locator('button[type="submit"]').click()]);
+    // Wait for the navigation the submit causes; the current page is already loaded, so waiting for 'load' alone returns at once.
+    await Promise.all([page.waitForEvent('framenavigated', (frame) => frame === page.mainFrame()), form.locator('button[type="submit"]').click()]);
+    await page.waitForLoadState('load');
     await page.reload();
 
     const stored = target.database.activities(tenantId(target, T)).filter((row) => row.notes === note);
@@ -112,7 +114,9 @@ test.describe('03 sessions · UI', () => {
 
     const admin = await credentials.fresh(account(T, 'executive'));
     await target.auth.revokeUser(request, admin.headers, id);
-    await Promise.all([page.waitForLoadState('load'), form.locator('button[type="submit"]').click()]);
+    // Wait for the navigation the submit causes; the current page is already loaded, so waiting for 'load' alone returns at once.
+    await Promise.all([page.waitForEvent('framenavigated', (frame) => frame === page.mainFrame()), form.locator('button[type="submit"]').click()]);
+    await page.waitForLoadState('load');
 
     const stored = target.database.activities(tid).filter((row) => row.notes === note);
     await review.verifyPage(page, stored.length === 0 && (await target.auth.onLoginPage(page)), { ...session, roles: ['rep'], key: 'session/session-revocation', title: 'A browser session is still accepted after explicit revocation', label: `form submitted after revocation (${device})`, route: 'POST /referral-sources/:id/activities', expected: 'nothing stored, sign-in page shown', actual: `${stored.length} stored, page "${await shown(page)}"`, steps: ['A rep opens a form and fills it in.', 'An administrator revokes the rep.', 'The rep submits the form.'] });
